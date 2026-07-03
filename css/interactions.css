@@ -1,0 +1,624 @@
+/* ============================================================
+   INTERACTIONS — Suraj Digital HQ
+   Premium motion layer: loader, tilt, magnetic, micro-interactions
+   ============================================================ */
+
+/* ── Scroll progress bar ───────────────────────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--warm));
+  z-index: calc(var(--z-sticky) + 10);
+  transform-origin: left;
+  transition: width 0.05s linear;
+  pointer-events: none;
+}
+
+/* ── Page Loader ───────────────────────────────────────────── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+  pointer-events: all;
+}
+
+.loader__panel {
+  position: absolute;
+  inset: 0;
+  background: var(--black);
+  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  transform-origin: top;
+}
+
+.loader.is-exiting .loader__panel {
+  transform: scaleY(0);
+}
+
+.loader__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.loader__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: 1.25rem;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: scale(0.8) translateY(8px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-spring);
+  box-shadow: 0 0 32px rgba(124, 110, 247, 0.4);
+}
+
+.loader__logo.is-shown {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.loader__track {
+  width: 180px;
+  height: 1px;
+  background: var(--surface-4);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.3s;
+}
+
+.loader__track.is-shown {
+  opacity: 1;
+}
+
+.loader__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  border-radius: var(--radius-full);
+  transition: width 0.05s linear;
+}
+
+.loader__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--white-30);
+  letter-spacing: var(--tracking-wider);
+  opacity: 0;
+  transition: opacity 0.4s ease 0.3s;
+}
+
+.loader__count.is-shown {
+  opacity: 1;
+}
+
+/* ── Ambient background canvas ─────────────────────────────── */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+}
+
+/* ── Body transition after loader ──────────────────────────── */
+body {
+  /* Prevent FOUC before loader takes over */
+}
+
+body.is-loaded .hero__bg {
+  /* Extra pulse after load */
+}
+
+/* ── Enhanced hero orbs (animated drift) ───────────────────── */
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(40px, -30px) scale(1.05); }
+  66%       { transform: translate(-20px, 20px) scale(0.97); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-30px, 20px) scale(1.03); }
+  70%       { transform: translate(15px, -25px) scale(0.98); }
+}
+
+@keyframes orb-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(25px, 30px) scale(1.04); }
+}
+
+/* Apply drift after orbs have appeared */
+.hero__orb--1 { animation: orb-appear 1.2s var(--ease-out) 0.2s both, orb-drift-1 18s ease-in-out 1.5s infinite; }
+.hero__orb--2 { animation: orb-appear 1.2s var(--ease-out) 0.5s both, orb-drift-2 22s ease-in-out 2s infinite; }
+.hero__orb--3 { animation: orb-appear 1.2s var(--ease-out) 0.8s both, orb-drift-3 16s ease-in-out 2.5s infinite; }
+
+/* ── Hero headline: clip-path text reveal ──────────────────── */
+.hero__headline-line {
+  display: block;
+  overflow: hidden;
+  /* Wraps the inner span for clip-path reveal */
+}
+
+.hero__headline-line .line-inner {
+  display: block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition:
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero__headline-line .line-inner.is-revealed {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Stagger per line — JS sets --line-index */
+.hero__headline-line:nth-child(1) .line-inner { transition-delay: 0s; }
+.hero__headline-line:nth-child(2) .line-inner { transition-delay: 0.14s; }
+.hero__headline-line:nth-child(3) .line-inner { transition-delay: 0.28s; }
+
+/* ── Hero gradient text shimmer ────────────────────────────── */
+@keyframes shimmer-pass {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--white) 0%,
+    var(--accent-soft) 25%,
+    var(--warm) 50%,
+    var(--accent-soft) 75%,
+    var(--white) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-pass 5s linear 2s infinite;
+}
+
+/* ── Enhanced nav link hover ────────────────────────────────── */
+.nav__link {
+  overflow: hidden;
+}
+
+.nav__link::after {
+  /* More refined underline slide */
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav__link.is-active {
+  color: var(--white);
+}
+
+.nav__link.is-active::after {
+  transform: scaleX(1);
+}
+
+/* ── Drawer link stagger ────────────────────────────────────── */
+.nav__drawer-link {
+  transform: translateX(-20px);
+  opacity: 0;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    padding-left var(--duration-base) var(--ease-out),
+    transform 0.5s var(--ease-out),
+    opacity 0.5s var(--ease-out);
+}
+
+.nav.is-open .nav__drawer-link:nth-child(1) { transform: translateX(0); opacity: 1; transition-delay: 0.05s; }
+.nav.is-open .nav__drawer-link:nth-child(2) { transform: translateX(0); opacity: 1; transition-delay: 0.10s; }
+.nav.is-open .nav__drawer-link:nth-child(3) { transform: translateX(0); opacity: 1; transition-delay: 0.15s; }
+.nav.is-open .nav__drawer-link:nth-child(4) { transform: translateX(0); opacity: 1; transition-delay: 0.20s; }
+.nav.is-open .nav__drawer-link:nth-child(5) { transform: translateX(0); opacity: 1; transition-delay: 0.25s; }
+.nav.is-open .nav__drawer-link:nth-child(6) { transform: translateX(0); opacity: 1; transition-delay: 0.30s; }
+
+/* ── Enhanced button interactions ──────────────────────────── */
+.btn--primary {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s var(--ease-out),
+    background 0.3s var(--ease-out);
+}
+
+.btn--primary::before {
+  /* Shimmer overlay */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.btn--primary:hover::before {
+  left: 150%;
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 0 1px rgba(124, 110, 247, 0.4), 0 8px 32px rgba(124, 110, 247, 0.4), 0 16px 48px rgba(124, 110, 247, 0.15);
+}
+
+.btn--primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 0 16px rgba(124, 110, 247, 0.3);
+}
+
+.btn--ghost {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s var(--ease-out),
+    background 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+.btn--ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.btn--ghost:active {
+  transform: scale(0.98);
+}
+
+/* Ripple effect */
+.btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0);
+  animation: ripple-expand 0.6s var(--ease-out) forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ── Magnetic button wrapper ────────────────────────────────── */
+.btn-magnetic {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ── Card tilt ──────────────────────────────────────────────── */
+.tilt-card {
+  transform:
+    perspective(1000px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    translateZ(var(--tilt-z, 0px));
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tilt-card:not(:hover) {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Inner shine element */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.tilt-card:hover .card-shine {
+  opacity: 1;
+}
+
+/* ── Section reveal variants ────────────────────────────────── */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition:
+    opacity var(--duration-slower) var(--ease-out),
+    transform var(--duration-slower) var(--ease-out);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition:
+    opacity var(--duration-slower) var(--ease-out),
+    transform var(--duration-slower) var(--ease-out);
+}
+
+.reveal-left.is-visible,
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Stack node appear ──────────────────────────────────────── */
+.stack-node__card {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.stack-node__card.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── FAQ enhanced ───────────────────────────────────────────── */
+.faq-item__answer-inner {
+  transform: translateY(-8px);
+  transition:
+    transform 0.4s var(--ease-out) 0.05s,
+    opacity 0.4s var(--ease-out) 0.05s;
+  opacity: 0;
+}
+
+.faq-item.is-open .faq-item__answer-inner {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s,
+    opacity 0.4s var(--ease-out) 0.05s;
+}
+
+/* ── Input interaction enhancements ─────────────────────────── */
+.booking__form-input,
+.booking__form-textarea,
+.booking__form-select {
+  transition:
+    border-color 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    transform 0.2s var(--ease-out);
+}
+
+.booking__form-input:focus,
+.booking__form-textarea:focus,
+.booking__form-select:focus {
+  transform: translateY(-1px);
+}
+
+/* ── Time slot micro-interaction ────────────────────────────── */
+.booking__time-slot {
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out),
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.booking__time-slot:hover {
+  transform: translateX(4px);
+}
+
+.booking__time-slot.is-selected {
+  transform: translateX(6px);
+}
+
+/* ── Casestudy metric reveal ────────────────────────────────── */
+.casestudy-metric {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+.casestudy-metric.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.casestudy-metric:nth-child(1) { transition-delay: 0.0s; }
+.casestudy-metric:nth-child(2) { transition-delay: 0.1s; }
+.casestudy-metric:nth-child(3) { transition-delay: 0.2s; }
+.casestudy-metric:nth-child(4) { transition-delay: 0.3s; }
+.casestudy-metric:nth-child(5) { transition-delay: 0.4s; }
+
+/* ── Why card refined hover ─────────────────────────────────── */
+.why-card {
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out),
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s var(--ease-out);
+}
+
+.why-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(124, 110, 247, 0.08);
+}
+
+/* ── Service card refined hover ─────────────────────────────── */
+.service-card {
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.service-card:hover {
+  box-shadow: var(--shadow-xl), 0 0 48px rgba(124, 110, 247, 0.06);
+}
+
+/* ── Lab card refined hover ─────────────────────────────────── */
+.lab-card {
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Footer link hover ──────────────────────────────────────── */
+.footer__nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+}
+
+.footer__nav-link::after {
+  content: ' →';
+  display: inline-block;
+  transform: translateX(-8px);
+  opacity: 0;
+  transition:
+    transform 0.25s var(--ease-out),
+    opacity 0.25s var(--ease-out);
+  font-size: 0.85em;
+  color: var(--accent-soft);
+}
+
+.footer__nav-link:hover::after {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* ── Social link refined ────────────────────────────────────── */
+.footer__social-link {
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.footer__social-link:hover {
+  transform: translateY(-3px);
+}
+
+/* ── Project card image: warmer hover ───────────────────────── */
+.project-card {
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s var(--ease-out);
+}
+
+/* ── Eyebrow line extension ─────────────────────────────────── */
+@keyframes eyebrow-extend {
+  from { width: 0; }
+  to   { width: 20px; }
+}
+
+.section-eyebrow.is-visible::before {
+  animation: eyebrow-extend 0.6s var(--ease-out) forwards;
+}
+
+/* ── Scroll-linked hero heading float ───────────────────────── */
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* Applied via JS after load */
+.hero__headline.is-floating {
+  animation: hero-float 6s ease-in-out infinite 2s;
+}
+
+/* ── Process node pulse on reveal ───────────────────────────── */
+@keyframes node-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(124, 110, 247, 0.2); }
+  70%  { box-shadow: 0 0 0 12px rgba(124, 110, 247, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 110, 247, 0); }
+}
+
+.process-step.is-visible .process-step__node {
+  animation: node-pulse 2s ease-out 0.3s 2;
+}
+
+/* ── Global ambient gradient behind sections ────────────────── */
+@keyframes global-grad-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ── Reduced motion overrides ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero__orb--1,
+  .hero__orb--2,
+  .hero__orb--3 {
+    animation: none;
+    opacity: 0.3;
+  }
+
+  .gradient-text {
+    animation: none;
+  }
+
+  .hero__headline.is-floating {
+    animation: none;
+  }
+
+  .btn--primary::before {
+    display: none;
+  }
+
+  .tilt-card {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .loader {
+    display: none;
+  }
+
+  .hero__headline-line .line-inner {
+    transform: none;
+    opacity: 1;
+  }
+}

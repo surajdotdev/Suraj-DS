@@ -1,0 +1,146 @@
+/* ============================================================
+   DESIGN TOKENS — Suraj Digital HQ
+   ============================================================ */
+
+:root {
+
+  /* ── Color Palette ── */
+  --black:        #0a0a0b;
+  --surface-0:    #0d0d0f;
+  --surface-1:    #111114;
+  --surface-2:    #18181d;
+  --surface-3:    #1e1e26;
+  --surface-4:    #252530;
+  --border:       rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.14);
+  --border-focus: rgba(255, 255, 255, 0.28);
+
+  --white:        #ffffff;
+  --white-90:     rgba(255,255,255,0.90);
+  --white-70:     rgba(255,255,255,0.70);
+  --white-50:     rgba(255,255,255,0.50);
+  --white-30:     rgba(255,255,255,0.30);
+  --white-10:     rgba(255,255,255,0.10);
+  --white-06:     rgba(255,255,255,0.06);
+  --white-04:     rgba(255,255,255,0.04);
+
+  /* Accent — restrained, intentional */
+  --accent:       #7c6ef7;          /* indigo-violet */
+  --accent-dim:   rgba(124,110,247,0.15);
+  --accent-glow:  rgba(124,110,247,0.30);
+  --accent-soft:  #a99df8;
+  --accent-dark:  #5b4fd4;
+
+  --warm:         #e8d5a3;          /* warm gold — typography accent */
+  --warm-dim:     rgba(232,213,163,0.12);
+
+  /* Semantic */
+  --success:      #34d399;
+  --warning:      #f59e0b;
+  --error:        #ef4444;
+
+  /* ── Typography ── */
+  --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Scale — modular, generous */
+  --text-xs:      0.75rem;    /* 12px */
+  --text-sm:      0.875rem;   /* 14px */
+  --text-base:    1rem;       /* 16px */
+  --text-md:      1.125rem;   /* 18px */
+  --text-lg:      1.25rem;    /* 20px */
+  --text-xl:      1.5rem;     /* 24px */
+  --text-2xl:     2rem;       /* 32px */
+  --text-3xl:     2.75rem;    /* 44px */
+  --text-4xl:     3.5rem;     /* 56px */
+  --text-5xl:     4.5rem;     /* 72px */
+  --text-6xl:     6rem;       /* 96px */
+
+  /* Leading */
+  --leading-tight:  1.15;
+  --leading-snug:   1.35;
+  --leading-base:   1.6;
+  --leading-relaxed:1.8;
+
+  /* Tracking */
+  --tracking-tight: -0.04em;
+  --tracking-snug:  -0.02em;
+  --tracking-base:  -0.01em;
+  --tracking-wide:  0.08em;
+  --tracking-wider: 0.14em;
+
+  /* Weight */
+  --weight-light:   300;
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+
+  /* ── Spacing ── */
+  --space-1:   0.25rem;    /* 4px  */
+  --space-2:   0.5rem;     /* 8px  */
+  --space-3:   0.75rem;    /* 12px */
+  --space-4:   1rem;       /* 16px */
+  --space-5:   1.25rem;    /* 20px */
+  --space-6:   1.5rem;     /* 24px */
+  --space-8:   2rem;       /* 32px */
+  --space-10:  2.5rem;     /* 40px */
+  --space-12:  3rem;       /* 48px */
+  --space-16:  4rem;       /* 64px */
+  --space-20:  5rem;       /* 80px */
+  --space-24:  6rem;       /* 96px */
+  --space-32:  8rem;       /* 128px */
+  --space-40:  10rem;      /* 160px */
+
+  /* ── Layout ── */
+  --container-sm:   640px;
+  --container-md:   768px;
+  --container-lg:   1024px;
+  --container-xl:   1280px;
+  --container-2xl:  1440px;
+
+  --nav-height:     72px;
+  --section-pad-y:  var(--space-32);
+
+  /* ── Border Radius ── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-3xl:  32px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.5);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.5);
+  --shadow-xl:  0 16px 64px rgba(0,0,0,0.6);
+  --shadow-2xl: 0 32px 96px rgba(0,0,0,0.7);
+
+  --shadow-accent-sm: 0 0 16px rgba(124,110,247,0.2);
+  --shadow-accent-md: 0 0 32px rgba(124,110,247,0.25);
+  --shadow-accent-lg: 0 0 64px rgba(124,110,247,0.3);
+
+  /* ── Transitions ── */
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-linear:  linear;
+
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+  --duration-slow:   400ms;
+  --duration-slower: 600ms;
+
+  /* ── Z-Index ── */
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:    10;
+  --z-dropdown:  100;
+  --z-sticky:    200;
+  --z-overlay:   300;
+  --z-modal:     400;
+  --z-toast:     500;
+}

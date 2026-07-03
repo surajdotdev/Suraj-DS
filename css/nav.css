@@ -1,0 +1,265 @@
+/* ============================================================
+   NAVIGATION — Suraj Digital HQ
+   ============================================================ */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  transition:
+    background var(--duration-slow) var(--ease-in-out),
+    border-color var(--duration-slow) var(--ease-in-out),
+    box-shadow var(--duration-slow) var(--ease-in-out);
+  border-bottom: 1px solid transparent;
+}
+
+.nav.is-scrolled {
+  background: rgba(10, 10, 11, 0.85);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 1px 0 var(--border), 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--container-2xl);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .nav__inner { padding-inline: var(--space-16); }
+}
+
+/* ── Logo ── */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav__logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  color: var(--white);
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-accent-sm);
+}
+
+.nav__logo-text {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
+  color: var(--white);
+}
+
+/* ── Desktop Links ── */
+.nav__links {
+  display: none;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+@media (min-width: 1024px) {
+  .nav__links { display: flex; }
+}
+
+.nav__link {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--white-50);
+  text-decoration: none;
+  letter-spacing: var(--tracking-base);
+  position: relative;
+  padding-block: var(--space-1);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.nav__link:hover {
+  color: var(--white);
+}
+
+.nav__link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Nav Actions ── */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav__cta {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav__cta { display: inline-flex; }
+}
+
+/* ── Mobile Toggle ── */
+.nav__toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: 1px solid var(--border);
+  transition: border-color var(--duration-base) var(--ease-out), background var(--duration-base) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.nav__toggle:hover {
+  border-color: var(--border-hover);
+  background: var(--white-06);
+}
+
+@media (min-width: 1024px) {
+  .nav__toggle { display: none; }
+}
+
+.nav__toggle-bar {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--white-70);
+  border-radius: var(--radius-full);
+  transition: transform var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out), width var(--duration-base) var(--ease-out);
+  transform-origin: center;
+}
+
+.nav.is-open .nav__toggle-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav.is-open .nav__toggle-bar:nth-child(2) { opacity: 0; width: 0; }
+.nav.is-open .nav__toggle-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── Mobile Drawer ── */
+.nav__drawer {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 11, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-8) var(--space-6);
+  gap: var(--space-8);
+  transform: translateX(100%);
+  transition: transform var(--duration-slow) var(--ease-out);
+  overflow-y: auto;
+}
+
+.nav.is-open .nav__drawer {
+  transform: translateX(0);
+}
+
+@media (min-width: 1024px) {
+  .nav__drawer { display: none; }
+}
+
+.nav__drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+
+.nav__drawer-link {
+  display: block;
+  padding: var(--space-5) 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
+  color: var(--white-70);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color var(--duration-base) var(--ease-out), padding-left var(--duration-base) var(--ease-out);
+}
+
+.nav__drawer-link:hover {
+  color: var(--white);
+  padding-left: var(--space-3);
+}
+
+.nav__drawer-cta {
+  margin-top: auto;
+}
+
+.nav__drawer-cta .btn {
+  width: 100%;
+  padding-block: var(--space-5);
+  font-size: var(--text-base);
+}
+
+/* ── Status dot ── */
+.nav__status {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--white-30);
+  margin-top: auto;
+  padding-top: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .nav__status { display: flex; }
+}
+
+.nav__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--success);
+  flex-shrink: 0;
+  animation: pulse-dot 2.5s ease infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(52,211,153,0); }
+}
